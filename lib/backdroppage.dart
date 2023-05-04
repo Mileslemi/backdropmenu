@@ -10,15 +10,13 @@ class BackDropPage extends StatefulWidget {
 
 class _BackdropPageState extends State<BackDropPage>
     with SingleTickerProviderStateMixin {
-  static const arrowPanelHeight = 48.0;
-
   late AnimationController _controller;
 
-  bool get _isPanelVisible {
-    final AnimationStatus status = _controller.status;
-    return status == AnimationStatus.completed ||
-        status == AnimationStatus.forward;
-  }
+  // bool get _isPanelVisible {
+  //   final AnimationStatus status = _controller.status;
+  //   return status == AnimationStatus.completed ||
+  //       status == AnimationStatus.forward;
+  // }
 
   @override
   void initState() {
@@ -35,8 +33,6 @@ class _BackdropPageState extends State<BackDropPage>
 
   Animation<RelativeRect> _getPanelAnimation(BoxConstraints constraints) {
     final double height = constraints.biggest.height;
-    // final double top = height - arrowPanelHeight;
-    // const double bottom = -arrowPanelHeight;
     return RelativeRectTween(
       begin: RelativeRect.fromLTRB(0.0, height, 0.0, 0),
       end: const RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
@@ -101,7 +97,7 @@ class _BackdropPageState extends State<BackDropPage>
                   ),
                 ),
                 SizedBox(
-                  height: arrowPanelHeight,
+                  height: 30,
                   child: Center(
                     child: IconButton(
                       onPressed: () {
