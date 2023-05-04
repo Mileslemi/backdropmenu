@@ -52,6 +52,11 @@ class _BackdropPageState extends State<BackDropPage>
       child: Stack(
         children: <Widget>[
           GestureDetector(
+            onVerticalDragUpdate: (details) {
+              if (details.delta.dy < 0) {
+                _controller.fling(velocity: 1.0);
+              }
+            },
             child: Container(
               height: MediaQuery.of(context).size.height,
               width: double.infinity,
