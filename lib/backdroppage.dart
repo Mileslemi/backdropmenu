@@ -10,7 +10,7 @@ class BackDropPage extends StatefulWidget {
 
 class _BackdropPageState extends State<BackDropPage>
     with SingleTickerProviderStateMixin {
-  static const arrowPanelHeight = 32.0;
+  static const arrowPanelHeight = 48.0;
 
   late AnimationController _controller;
 
@@ -40,7 +40,8 @@ class _BackdropPageState extends State<BackDropPage>
     return RelativeRectTween(
       begin: RelativeRect.fromLTRB(0.0, top, 0.0, bottom),
       end: const RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+    ).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn));
   }
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
