@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class BackDropPage extends StatefulWidget {
@@ -9,7 +10,7 @@ class BackDropPage extends StatefulWidget {
 
 class _BackdropPageState extends State<BackDropPage>
     with SingleTickerProviderStateMixin {
-  static const _PANEL_HEADER_HEIGHT = 32.0;
+  static const arrowPanelHeight = 32.0;
 
   late AnimationController _controller;
 
@@ -34,8 +35,8 @@ class _BackdropPageState extends State<BackDropPage>
 
   Animation<RelativeRect> _getPanelAnimation(BoxConstraints constraints) {
     final double height = constraints.biggest.height;
-    final double top = height - _PANEL_HEADER_HEIGHT;
-    const double bottom = -_PANEL_HEADER_HEIGHT;
+    final double top = height - arrowPanelHeight;
+    const double bottom = -arrowPanelHeight;
     return RelativeRectTween(
       begin: RelativeRect.fromLTRB(0.0, top, 0.0, bottom),
       end: const RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
@@ -49,8 +50,18 @@ class _BackdropPageState extends State<BackDropPage>
       color: theme.primaryColor,
       child: Stack(
         children: <Widget>[
-          const Center(
-            child: Text("Menu Here"),
+          GestureDetector(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              color: Colors.black,
+              child: const Center(
+                child: Text(
+                  "Menu Here",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ),
           PositionedTransition(
             rect: animation,
@@ -59,12 +70,28 @@ class _BackdropPageState extends State<BackDropPage>
                   topLeft: Radius.circular(16.0),
                   topRight: Radius.circular(16.0)),
               elevation: 12.0,
-              child: Column(children: <Widget>[
+              child: Stack(children: <Widget>[
                 Container(
-                  height: _PANEL_HEADER_HEIGHT,
-                  child: const Center(child: Text("Panel")),
+                  color: Colors.amber.shade100,
+                  child: const Center(
+                    child: Text("content"),
+                  ),
                 ),
-                const Expanded(child: Center(child: Text("content")))
+                SizedBox(
+                  height: arrowPanelHeight,
+                  child: Center(
+                    child: IconButton(
+                      onPressed: () {
+                        _controller.fling(
+                            velocity: _isPanelVisible ? -1.0 : 1.0);
+                      },
+                      icon: AnimatedIcon(
+                        icon: AnimatedIcons.menu_arrow,
+                        progress: _controller.view,
+                      ),
+                    ),
+                  ),
+                ),
               ]),
             ),
           ),
@@ -78,16 +105,7 @@ class _BackdropPageState extends State<BackDropPage>
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: const Text("Back Drop"),
-        leading: IconButton(
-          onPressed: () {
-            _controller.fling(velocity: _isPanelVisible ? -1.0 : 1.0);
-          },
-          icon: AnimatedIcon(
-            icon: AnimatedIcons.close_menu,
-            progress: _controller.view,
-          ),
-        ),
+        title: const Text("Click Below Arrow For Menu"),
       ),
       body: LayoutBuilder(
         builder: _buildStack,
